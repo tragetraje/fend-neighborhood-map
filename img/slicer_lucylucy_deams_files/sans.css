@@ -1,0 +1,6 @@
+﻿
+/* styles/options/fontScheme/base.scss */
+body { font-family: 'lucida grande', 'helvetica', helvetica, arial, sans-serif; }
+input,
+textarea,
+button { font-family: 'lucida grande', 'helvetica', helvetica, arial, sans-serif; }

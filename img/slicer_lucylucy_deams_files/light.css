@@ -1,0 +1,56 @@
+﻿
+/* styles/options/colorScheme/base.scss */
+body {
+  background: #efefef;
+  color: #555;
+}
+carbon-caption,
+.dem { color: rgba(85, 85, 85, 0.6); }
+.navContainer a.current { color: #555; }
+.navContainer a:hover { color: #555; }
+.thumb .thumbImg { border-color: #efefef; }
+.projectDetail { border-color: rgba(85, 85, 85, 0.1); }
+.availability { border-bottom-color: rgba(85, 85, 85, 0.1); }
+.availability .unavailable { color: rgba(85, 85, 85, 0.3); }
+.availability .unavailable + .note { color: rgba(85, 85, 85, 0.6); }
+.block a,
+.rescue a {
+  border-bottom-color: rgba(85, 85, 85, 0.3);
+  transition: border 0.2s ease;
+}
+.block a:hover,
+.rescue a:hover { border-bottom-color: rgba(85, 85, 85, 0.6); }
+.field input,
+.field textarea {
+  background: rgba(85, 85, 85, 0.02);
+  border-bottom-color: rgba(85, 85, 85, 0.1);
+  color: #555;
+}
+::-webkit-input-placeholder { color: rgba(85, 85, 85, 0.4); }
+::-moz-placeholder { color: rgba(85, 85, 85, 0.4); }
+:-ms-input-placeholder { color: rgba(85, 85, 85, 0.4); }
+::placeholder { color: rgba(85, 85, 85, 0.4); }
+#zoomer.open { background: rgba(239, 239, 239, 0.9); }
+carbon-waveform > .bar { background: rgba(85, 85, 85, 0.3); }
+a,
+a:hover { color: #444; }
+header.container { box-shadow: 0 30px 20px -20px rgba(85, 85, 85, 0.3); }
+footer .container {
+  background-image: radial-gradient(50% 50%, rgba(85, 85, 85, 0.15), rgba(85, 85, 85, 0));
+  background-position-y: -3.5em;
+  background-size: 100% 7em;
+  background-repeat: no-repeat;
+}
+.navContainer a.current,
+.navContainer a.current:hover { color: #666; }
+.navContainer a:hover { color: #777; }
+.projectWell,
+.formWell { background: #fff; }
+.projectTitle { background: rgba(239, 239, 239, 0.7); }
+#thumbnails { background: #e5e5e5; }
+.siteTitle:hover:before { background: url('../images/header_icn-homeLight.png') no-repeat; }
+.field input,
+.field textarea { background: #f5f5f5; }
+.thumb:hover .thumbImg { border-color: #ccc; }
+.noThumb .thumbImg,
+carbon-gallery .thumbnails li.empty { background: rgba(51, 51, 51, 0.1); }
