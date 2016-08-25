@@ -46,6 +46,9 @@ var artLocations = [
     author: "Askew, Auckland",
     artworkLocation: "Crowne Plaza, Honeysuckle"
   },{
+    author: "Adnate, Melbourne",
+    artworkLocation: "2 Bishopsgate Street, Wickham"
+  },{
     author: "Tyrsa, France",
     artworkLocation: "707 Hunter Street, Newcastle"
   },{
@@ -62,14 +65,25 @@ var artLocations = [
     artworkLocation: "9 Albert Street, Wickham"
   },{
     author: "Adnate, Melbourne",
-    artworkLocation: "2 Bishopsgate Street, Wickham"
-  },{
-    author: "Adnate, Melbourne",
     artworkLocation: "Bolton street, Newcastle"
   }
 ];
 
 function AppViewModel() {
+  var self = this;
+  var markers = [];
+  var newcastle,
+      map;
+
+
+  function initializeMap() {
+    newcastle = new google.maps.latLng(-32.929927, 151.773169);
+    map = new google.maps.Map(document.getElementById('map'), {
+        center: newcastle,
+        zoom: 16,
+        mapTypeControl: false
+    });
+  }
 }
 
-ko.applyBindings(new AppViewModel());
+//ko.applyBindings(new AppViewModel());
