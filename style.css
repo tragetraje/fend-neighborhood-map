@@ -25,3 +25,8 @@ h1 {
   position: absolute;
   right: 0px;
 }
+
+#pano {
+  width: 400px;
+  height: 300px;
+}
