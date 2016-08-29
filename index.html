@@ -3,20 +3,18 @@
   <head>
     <meta charset="UTF-8">
     <title>Street Art Map of Newcastle, Australia</title>
-    <link rel="stylesheet" href=#>
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
     <div class="container">
-      <div class="options-box">
         <h1>Newcastle Street Art Map</h1>
-      </div>
     <div id="map"></div>
   </div>
 
     <script src="app.js"></script>
     <script type="text/javascript" src="knockout-3.4.0.js"></script>
     <script async defer
-        src="https://maps.googleapis.com/maps/api/js?&key=AIzaSyBYixdJNss4B8FmoYDKJgG5mgr1q1zhRFg&v=3">
+        src="https://maps.googleapis.com/maps/api/js?&key=AIzaSyBYixdJNss4B8FmoYDKJgG5mgr1q1zhRFg&v=3&callback=initializeMap">
     </script>
   </body>
 </html>
