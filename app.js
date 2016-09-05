@@ -1,7 +1,3 @@
-//  Photo attribution:
-//  http://lisadorenfest.com/
-//  http://graffitisdumonde.blogspot.com.au/
-
 var artLocations = [
   {
     author: "DEAMS, Melbourne",
@@ -141,6 +137,12 @@ var artLocations = [
   // Extend the boundaries of the map for each marker
   map.fitBounds(bounds);
 }
+
+  // Flickr call
+  var url = 'https://api.flickr.com/services/rest/?method=flickr.people.getPhotos&api_key=d66ea8106f3d02452b74363e4900bcd1&user_id=144843076%40N03&format=json&nojsoncallback=1';
+
+
+
   // Display infowindow and street view object
   function populateInfoWindow(marker, infowindow) {
   if (infowindow.marker != marker) {
