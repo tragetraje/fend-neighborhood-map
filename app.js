@@ -150,7 +150,7 @@ var artLocations = [
   // Extend the boundaries of the map for each marker
   map.fitBounds(bounds);
 }
-  // Display infowindow and street view object
+  // Display infowindow and flickr image
   function populateInfoWindow(marker, infowindow) {
   if (infowindow.marker != marker) {
     infowindow.setContent('');
@@ -159,6 +159,7 @@ var artLocations = [
       infowindow.marker =null;
     });
 
+    // Flickr API call to get streetart image
     function getFlickrImage() {
         $.getJSON(flickrUrl, function(data) {
           var detail = data.photos.photo[0];
