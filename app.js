@@ -113,6 +113,7 @@ var artLocations = [
     for (var i = 0; i < artLocations.length; i++) {
       var position = artLocations[i].coordinates;
       var title = artLocations[i].author;
+      var address = artLocations[i].artworkLocation;
       var marker = new google.maps.Marker({
         map: map,
         position: position,
@@ -121,6 +122,18 @@ var artLocations = [
         animation: google.maps.Animation.DROP,
         id: i
       });
+
+      // Flickr API search method url
+      var flickrUrl = 'https://api.flickr.com/services/rest/';
+      flickrUrl += '?' + $.param({
+      'method': 'flickr.photos.search',
+      'api_key': 'dd45d7051de5b76009350707895811ae',
+      'user_id': '144843076%40N03',
+      'text': title + address,
+      'format': 'json',
+      'nojsoncallback': 1
+      });
+
       markers.push(marker);
       marker.addListener('click', function() {
         populateInfoWindow(this, largeInfowindow);
@@ -137,12 +150,6 @@ var artLocations = [
   // Extend the boundaries of the map for each marker
   map.fitBounds(bounds);
 }
-
-  // Flickr call
-  var url = 'https://api.flickr.com/services/rest/?method=flickr.people.getPhotos&api_key=d66ea8106f3d02452b74363e4900bcd1&user_id=144843076%40N03&format=json&nojsoncallback=1';
-
-
-
   // Display infowindow and street view object
   function populateInfoWindow(marker, infowindow) {
   if (infowindow.marker != marker) {
@@ -151,29 +158,18 @@ var artLocations = [
     infowindow.addListener('closeclick', function() {
       infowindow.marker =null;
     });
-    var streetViewService = new google.maps.StreetViewService();
-    var radius = 100;
-    function getStreetView(data, status) {
-      if (status == google.maps.StreetViewStatus.OK) {
-        var nearStreetViewLocation = data.location.latLng;
-        var heading = google.maps.geometry.spherical.computeHeading(
-          nearStreetViewLocation, marker.position);
-          infowindow.setContent('<div>' + marker.title + '</div><div id="pano"></div>');
-          var panoramaOptions = {
-            position: nearStreetViewLocation,
-            pov: {
-              heading: heading,
-              pitch: 15
-            }
-          };
-        var panorama = new google.maps.StreetViewPanorama(
-          document.getElementById('pano'), panoramaOptions);
-      } else {
-        infowindow.setContent('<div>' + marker.title + '</div>' +
-          '<div>No Street View Found</div>');
-      }
-    }
-    streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
+
+    function getFlickrImage() {
+        $.getJSON(flickrUrl, function(data) {
+          var detail = data.photos.photo[0];
+          infowindow.setContent('<div>' + marker.title + '</div><div id="flckr-img"><img class="infowndw-img" src="https://farm' + detail.farm + '.staticflickr.com/' + detail.server + '/' + detail.id + '_' + detail.secret + '_n.jpg"></div>');
+          var image = document.getElementById('flckr-img');
+        }).fail(function(){
+          infowindow.setContent('<div>' + marker.title + '</div>' +
+            '<div>No Flickr Image Found</div>');
+        });
+      };
+    image.getFlickrImage();
     infowindow.open(map, marker);
   }
 }
