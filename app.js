@@ -173,15 +173,17 @@ function initializeMap() {
     // Populate markers and infowindows on click of a marker
     for (var i = 0; i < artLocations.length; i++) {
         var position = artLocations[i].coordinates;
-        var title = artLocations[i].author;
+        var author = artLocations[i].author;
         var address = artLocations[i].artworkLocation;
         var marker = new google.maps.Marker({
             map: map,
             position: position,
-            title: title,
+            title: author,
+            author: author,
             icon: defaultIconColor,
             animation: google.maps.Animation.DROP,
-            id: i
+            id: i,
+
         });
 
         markers.push(marker);
@@ -208,11 +210,26 @@ function populateInfoWindow(marker, infowindow) {
         infowindow.addListener('closeclick', function() {
             infowindow.marker = null;
         });
-
+        // Function declaration
+        //https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/function
         // Flickr API call to get streetart image
         function getFlickrImage() {
+          var API_KEY = 'dd45d7051de5b76009350707895811ae';
+          var USER_ID = '144843076%40N03';
+          var base_url = 'https://api.flickr.com/services/rest/?';
+          var method = 'flickr.photos.search';
+          var query = marker.author;
+          // Flickr API request url
+          var url = base_url +
+               'method=' + method +
+               '&api_key=' + API_KEY +
+               '&user_id=' + USER_ID +
+               '&text=' + query +
+               '&format=json' +
+               '&nojsoncallback=1';
 
             // Flickr API search method url
+            /*
             var flickrUrl = 'https://api.flickr.com/services/rest/';
             flickrUrl += '?' + $.param({
                 'method': 'flickr.photos.search',
@@ -222,16 +239,28 @@ function populateInfoWindow(marker, infowindow) {
                 'format': 'json',
                 'nojsoncallback': 1
             });
-            $.getJSON(flickrUrl, function(data) {
+
+            var flickrUrl = 'https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=dd45d7051de5b76009350707895811ae&user_id=144843076%40N03&text=adnate+numskull&format=json&nojsoncallback=1';
+            */
+            $.getJSON(url, function(data) {
+                console.log(data);
                 var detail = data.photos.photo[0];
+                if (detail) {
+                infowindow.setContent('<div>' + marker.title + '</div><div id="flckr-img"><img class="infowndw-img" src="https://farm' + detail.farm + '.staticflickr.com/' + detail.server + '/' + detail.id + '_' + detail.secret + '_n.jpg"></div>');
+              } else {
+                infowindow.setContent('<div> Nothing Found </div>');
+              }
+                /*
                 infowindow.setContent('<div>' + marker.title + '</div><div id="flckr-img"><img class="infowndw-img" src="https://farm' + detail.farm + '.staticflickr.com/' + detail.server + '/' + detail.id + '_' + detail.secret + '_n.jpg"></div>');
                 var image = document.getElementById('flckr-img');
+                */
             }).fail(function() {
                 infowindow.setContent('<div>' + marker.title + '</div>' +
                     '<div>No Flickr Image Found</div>');
             });
         };
-        image.getFlickrImage();
+        //invoking function declaration
+        getFlickrImage();
         infowindow.open(map, marker);
     }
 }
