@@ -1,5 +1,6 @@
 var artLocations = [{
-    author: "DEAMS, Melbourne",
+    author: "DEAMS - Parry street",
+    origin: "Melbourne",
     artworkLocation: "61 Parry Street, Newcastle West",
     coordinates: {
         "lat": -32.927980,
@@ -14,7 +15,8 @@ var artLocations = [{
     },
     web: ["www.beastman.com.au", "http://phibs.com"]
 }, {
-    author: "Alex Lehours, Sydney",
+    author: "Alex Lehours",
+    origin: "Sydney",
     artworkLocation: "590 Hunter Street, Newcastle West",
     coordinates: {
         "lat": -32.926667,
@@ -22,7 +24,8 @@ var artLocations = [{
     },
     web: ["www.alexlehours.com"]
 }, {
-    author: "TWOONE, Melbourne",
+    author: "TWOONE",
+    origin: "Melbourne",
     artworkLocation: "426 King Street, Newcastle West",
     coordinates: {
         "lat": -32.927487,
@@ -37,7 +40,8 @@ var artLocations = [{
     },
     web: ["www.funskull.com", "http://adnate.com.au"]
 }, {
-    author: "Thomas Jackson, Sydney",
+    author: "Thomas Jackson",
+    origin: "Sydney",
     artworkLocation: "44 Laman street, Cooks Hill",
     coordinates: {
         "lat": -32.929034,
@@ -46,27 +50,31 @@ var artLocations = [{
     web: ["www.thomasjackson.com.au"]
 }, {
     author: "Dan Prestage",
+    origin: "Newcastle",
     artworkLocation: "500 Hunter street, Newcastle",
     coordinates: {
         "lat": -32.926760,
         "lng": 151.769852
     }
 }, {
-    author: "BMD, NZ",
+    author: "BMD",
+    origin: "NZ",
     artworkLocation: "24 Dawson street, Cooks Hill",
     coordinates: {
         "lat": -32.930269,
         "lng": 151.770939
     }
 }, {
-    author: "Shannon Crees, Sydney",
+    author: "Shannon Crees",
+    origin: "Sydney",
     artworkLocation: "85 Darby Street, Cooks Hill",
     coordinates: {
         "lat": -32.930275,
         "lng": 151.772649
     }
 }, {
-    author: "Nico, Sydney",
+    author: "Nico",
+    origin: "Sydney",
     artworkLocation: "70 Darby Street, Cooks Hill",
     coordinates: {
         "lat": -32.929708,
@@ -74,7 +82,8 @@ var artLocations = [{
     },
     web: ["www.artofnico.com"]
 }, {
-    author: "Tristan Eaton, USA",
+    author: "Tristan Eaton",
+    origin: "USA",
     artworkLocation: "113-125 Darby Street, Cooks Hill",
     coordinates: {
         "lat": -32.931212,
@@ -82,21 +91,23 @@ var artLocations = [{
     },
     web: ["http://tristaneaton.com"]
 }, {
-    author: "Jumbo & Bafcat",
+    author: "Jumbo - Thorn Street",
     artworkLocation: "Thorn Street, Newcastle",
     coordinates: {
         "lat": -32.927170,
         "lng": 151.780403
     }
 }, {
-    author: "Jumbo, Sydney",
+    author: "Bafcat & Jumbo",
+    origin: "Sydney",
     artworkLocation: "223 King Street, Newcastle",
     coordinates: {
         "lat": -32.927992,
         "lng": 151.770814
     }
 }, {
-    author: "Askew, Auckland",
+    author: "Askew",
+    origin: "Auckland",
     artworkLocation: "Crowne Plaza, Honeysuckle",
     coordinates: {
         "lat": -32.925622,
@@ -105,13 +116,15 @@ var artLocations = [{
     web: ["http://www.askew1.com/"]
 }, {
     author: "Adnate - Wickham",
+    origin: "Melbourne",
     artworkLocation: "2 Bishopsgate Street, Wickham",
     coordinates: {
         "lat": -32.922804,
         "lng": 151.760176
     }
 }, {
-    author: "Tyrsa, France",
+    author: "Tyrsa",
+    origin: "France",
     artworkLocation: "707 Hunter Street, Newcastle",
     coordinates: {
         "lat": -32.926248,
@@ -119,7 +132,8 @@ var artLocations = [{
     },
     web: ["www.tyrsa.fr"]
 }, {
-    author: "Slicer & Lucy Lucy & Deams",
+    author: "Slicer & LucyLucy & Deams",
+    origin: "Melbourne",
     artworkLocation: "286 Maitland Rd, Mayfield",
     coordinates: {
         "lat": -32.896806,
@@ -127,7 +141,8 @@ var artLocations = [{
     },
     web: ["https://theworkofslicer.carbonmade.com", "https://lucylucy.carbonmade.com/"]
 }, {
-    author: "Chehehe, Melbourne",
+    author: "Chehehe",
+    origin: "Melbourne",
     artworkLocation: "180 Maitland Road, Mayfield",
     coordinates: {
         "lat": -32.900497,
@@ -152,6 +167,7 @@ var artLocations = [{
     web: ["www.iamskulk.com", ""]
 }, {
     author: "Adnate - Bolton street",
+    origin: "Melbourne",
     artworkLocation: "Bolton street, Newcastle",
     coordinates: {
         "lat": -32.929286,
@@ -187,11 +203,13 @@ function initializeMap() {
         var position = artLocations[i].coordinates;
         var author = artLocations[i].author;
         var address = artLocations[i].artworkLocation;
+        var origin = artLocations[i].origin;
         var marker = new google.maps.Marker({
             map: map,
             position: position,
-            title: author,
+            //title: author,
             author: author,
+            origin: origin,
             address: address,
             icon: defaultIconColor,
             animation: google.maps.Animation.DROP,
@@ -231,16 +249,14 @@ function populateInfoWindow(marker, infowindow) {
           var base_url = 'https://api.flickr.com/services/rest/?';
           var method = 'flickr.photos.search';
           var query =
-          marker.author.replace(/ -|,/, '');
-          //marker.author.split(',')[0].toLowerCase();
-          var tag = marker.address.replace(/,|-/, '').toLowerCase();
+          marker.author.replace(/ -| &/, '');
+
           // Flickr API request url
           var url = base_url +
                'method=' + method +
                '&api_key=' + API_KEY +
                '&user_id=' + USER_ID +
                '&text=' + query +
-               //'&tags=' + tag +
                '&format=json' +
                '&nojsoncallback=1';
 
@@ -262,7 +278,7 @@ function populateInfoWindow(marker, infowindow) {
                 console.log(data);
                 var detail = data.photos.photo[0];
                 if (detail) {
-                infowindow.setContent('<div>' + marker.title + '</div><div id="flckr-img"><img class="infowndw-img" src="https://farm' + detail.farm + '.staticflickr.com/' + detail.server + '/' + detail.id + '_' + detail.secret + '_n.jpg"></div>');
+                infowindow.setContent('<div>' + marker.author + ', ' + marker.origin + '<br>' + marker.address + '</div><div id="flckr-img"><img class="infowndw-img" src="https://farm' + detail.farm + '.staticflickr.com/' + detail.server + '/' + detail.id + '_' + detail.secret + '_n.jpg"></div>');
               } else {
                 infowindow.setContent('<div> Nothing Found </div>');
               }
@@ -271,7 +287,7 @@ function populateInfoWindow(marker, infowindow) {
                 var image = document.getElementById('flckr-img');
                 */
             }).fail(function() {
-                infowindow.setContent('<div>' + marker.title + '</div>' +
+                infowindow.setContent('<div>' + marker.author + '</div>' +
                     '<div>No Flickr Image Found</div>');
             });
         };
