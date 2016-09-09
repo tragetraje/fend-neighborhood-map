@@ -6,19 +6,21 @@ var artLocations = [{
         "lng": 151.759358
     }
 }, {
-    author: "WBYK, Sydney",
-    artworkLocation: "81 Parry Street, Newcastle West",
+    author: "Beastman & Phibs",
+    artworkLocation: "593 Hunter St, Newcastle",
     coordinates: {
-        "lat": -32.927392,
-        "lng": 151.758489
-    }
+        "lat": -32.927039,
+        "lng": 151.765485
+    },
+    web: ["www.beastman.com.au", "http://phibs.com"]
 }, {
     author: "Alex Lehours, Sydney",
     artworkLocation: "590 Hunter Street, Newcastle West",
     coordinates: {
         "lat": -32.926667,
         "lng": 151.766173
-    }
+    },
+    web: ["www.alexlehours.com"]
 }, {
     author: "TWOONE, Melbourne",
     artworkLocation: "426 King Street, Newcastle West",
@@ -32,14 +34,16 @@ var artLocations = [{
     coordinates: {
         "lat": -32.928587,
         "lng": 151.768000
-    }
+    },
+    web: ["www.funskull.com", "http://adnate.com.au"]
 }, {
     author: "Thomas Jackson, Sydney",
     artworkLocation: "44 Laman street, Cooks Hill",
     coordinates: {
         "lat": -32.929034,
         "lng": 151.769969
-    }
+    },
+    web: ["www.thomasjackson.com.au"]
 }, {
     author: "Dan Prestage",
     artworkLocation: "500 Hunter street, Newcastle",
@@ -67,14 +71,16 @@ var artLocations = [{
     coordinates: {
         "lat": -32.929708,
         "lng": 151.772818
-    }
+    },
+    web: ["www.artofnico.com"]
 }, {
     author: "Tristan Eaton, USA",
     artworkLocation: "113-125 Darby Street, Cooks Hill",
     coordinates: {
         "lat": -32.931212,
         "lng": 151.772216
-    }
+    },
+    web: ["http://tristaneaton.com"]
 }, {
     author: "Jumbo & Bafcat",
     artworkLocation: "Thorn Street, Newcastle",
@@ -95,9 +101,10 @@ var artLocations = [{
     coordinates: {
         "lat": -32.925622,
         "lng": 151.773055
-    }
+    },
+    web: ["http://www.askew1.com/"]
 }, {
-    author: "Adnate, Melbourne",
+    author: "Adnate - Wickham",
     artworkLocation: "2 Bishopsgate Street, Wickham",
     coordinates: {
         "lat": -32.922804,
@@ -109,37 +116,42 @@ var artLocations = [{
     coordinates: {
         "lat": -32.926248,
         "lng": 151.761640
-    }
+    },
+    web: ["www.tyrsa.fr"]
 }, {
     author: "Slicer & Lucy Lucy & Deams",
     artworkLocation: "286 Maitland Rd, Mayfield",
     coordinates: {
         "lat": -32.896806,
         "lng": 151.735608
-    }
+    },
+    web: ["https://theworkofslicer.carbonmade.com", "https://lucylucy.carbonmade.com/"]
 }, {
     author: "Chehehe, Melbourne",
     artworkLocation: "180 Maitland Road, Mayfield",
     coordinates: {
         "lat": -32.900497,
         "lng": 151.740542
-    }
+    },
+    web: ["www.stayingcreative.com.au"]
 }, {
     author: "Ox King & SMC3",
     artworkLocation: "156 Maitland Rd, Mayfield",
     coordinates: {
         "lat": -32.901225,
         "lng": 151.741271
-    }
+    },
+    web: ["http://smc3.net/", ""]
 }, {
     author: "Grizzle & Skulk",
     artworkLocation: "9 Albert Street, Wickham",
     coordinates: {
         "lat": -32.918106,
         "lng": 151.758055
-    }
+    },
+    web: ["www.iamskulk.com", ""]
 }, {
-    author: "Adnate, Melbourne",
+    author: "Adnate - Bolton street",
     artworkLocation: "Bolton street, Newcastle",
     coordinates: {
         "lat": -32.929286,
@@ -180,10 +192,10 @@ function initializeMap() {
             position: position,
             title: author,
             author: author,
+            address: address,
             icon: defaultIconColor,
             animation: google.maps.Animation.DROP,
-            id: i,
-
+            id: i
         });
 
         markers.push(marker);
@@ -218,13 +230,17 @@ function populateInfoWindow(marker, infowindow) {
           var USER_ID = '144843076%40N03';
           var base_url = 'https://api.flickr.com/services/rest/?';
           var method = 'flickr.photos.search';
-          var query = marker.author;
+          var query =
+          marker.author.replace(/ -|,/, '');
+          //marker.author.split(',')[0].toLowerCase();
+          var tag = marker.address.replace(/,|-/, '').toLowerCase();
           // Flickr API request url
           var url = base_url +
                'method=' + method +
                '&api_key=' + API_KEY +
                '&user_id=' + USER_ID +
                '&text=' + query +
+               //'&tags=' + tag +
                '&format=json' +
                '&nojsoncallback=1';
 
