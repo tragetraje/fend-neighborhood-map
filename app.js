@@ -188,6 +188,22 @@ function initializeMap() {
         zoom: 15,
         mapTypeControl: false
     });
+    ko.applyBindings(new ViewModel());
+}
+
+var ViewModel = function() {
+    //Make a reference of this in a new variable to avoid its tracking
+    var self = this;
+
+    self.searchQuery = ko.observable('');
+    self.locations = ko.observableArray(artLocations);
+    self.chosenLocations = ko.observableArray();
+
+    //Writes user's search query to input box and console
+    self.logToConsole = ko.computed(function() {
+      console.log(self.searchQuery());
+    });
+
 
     // Create infowindow object for a marker to display information, pics etc.
     var largeInfowindow = new google.maps.InfoWindow();
@@ -199,6 +215,7 @@ function initializeMap() {
 
 
     // Populate markers and infowindows on click of a marker
+    function populateFullMap(artLocations) {
     for (var i = 0; i < artLocations.length; i++) {
         var position = artLocations[i].coordinates;
         var author = artLocations[i].author;
@@ -207,7 +224,6 @@ function initializeMap() {
         var marker = new google.maps.Marker({
             map: map,
             position: position,
-            //title: author,
             author: author,
             origin: origin,
             address: address,
@@ -216,10 +232,15 @@ function initializeMap() {
             id: i
         });
 
+        //Add created location marker to marker array
         markers.push(marker);
+
+        //Make infowindow pop up on click of a marker
         marker.addListener('click', function() {
             populateInfoWindow(this, largeInfowindow);
         });
+
+        //Change marker's color hovering over it and off
         marker.addListener('mouseover', function() {
             this.setIcon(highlightedIconColor);
         });
@@ -227,11 +248,13 @@ function initializeMap() {
             this.setIcon(defaultIconColor);
         });
 
+        //Adjust the boundaries of the map to fit the markers
         bounds.extend(markers[i].position);
     }
     // Extend the boundaries of the map for each marker
     map.fitBounds(bounds);
-}
+  }
+
 // Display infowindow and flickr image
 function populateInfoWindow(marker, infowindow) {
     if (infowindow.marker != marker) {
@@ -295,4 +318,7 @@ function populateInfoWindow(marker, infowindow) {
         getFlickrImage();
         infowindow.open(map, marker);
     }
+  }
 }
+
+ko.applyBindings(new ViewModel());
