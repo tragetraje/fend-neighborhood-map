@@ -1,21 +1,26 @@
 html,
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Bree Serif', serif;
   height: 100%;
   margin: 0;
   padding: 0;
 }
 
 .container {
+  width: 25%;
+  float: left;
+}
+
+/*
+{
   height: 100%;
   position: relative;
 }
+*/
 
-h1 {
+h1, h4, p {
   color: #525454;
-  font-size: 18px;
-  margin: 0 20px 10px 20px;
-  text-align: left;
+  padding: 10px 0 0 10px;
 }
 
 #map {
@@ -25,7 +30,22 @@ h1 {
   position: absolute;
   right: 0px;
 }
-
+/*
+{
+  height: 100%;
+  width: 75%;
+  float: right;
+}
+*/
+/*
+{
+  bottom:0px;
+  height: 100%;
+  left: 362px;
+  position: absolute;
+  right: 0px;
+}
+*/
 #flckr-img {
   width: 350px;
   height: 250px;

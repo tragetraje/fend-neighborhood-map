@@ -175,8 +175,8 @@ var artLocations = [{
     }
 }];
 
-var newcastle,
-    map;
+var map,
+    newcastle;
 var markers = [];
 
 
