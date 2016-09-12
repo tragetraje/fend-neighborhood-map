@@ -200,9 +200,9 @@ var ViewModel = function() {
     self.chosenLocations = ko.observableArray();
 
     //Writes user's search query to input box and console
-    self.logToConsole = ko.computed(function() {
-      console.log(self.searchQuery());
-    });
+    //self.logToConsole = ko.computed(function() {
+    //  console.log(self.searchQuery());
+    //});
 
 
     // Create infowindow object for a marker to display information, pics etc.
@@ -212,6 +212,21 @@ var ViewModel = function() {
     // Style the markers
     var defaultIconColor = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
     var highlightedIconColor = 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png';
+
+    //Populate full map with markers or chosen locations only
+    self.populateMap = ko.computed(function() {
+        var queryString = self.searchQuery().toLowerCase();
+        var filteredLocations = [];
+
+        if (!queryString) {
+          return populateFullMap();
+        } else {
+          removeMarkers();
+          populateFilteredMap();
+        }
+    });
+
+
 
 
     // Populate markers and infowindows on click of a marker
