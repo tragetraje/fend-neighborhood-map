@@ -226,6 +226,26 @@ var ViewModel = function() {
         }
     });
 
+    //Handles the list of locations/chosen locations
+    self.selectLocations = ko.computed(function() {
+        var queryString = self.searchQuery().toLowerCase;
+
+        if (!queryString) {
+          //return artLocations;
+          return self.locations;
+        } else {
+          self.chosenLocations([]);
+          for (var i = 0; i < artLocations.length; i++) {
+              var author = artLocations[i].author;
+
+              if (author.indexOf(queryString) !== -1) {
+                self.chosenLocations.push(artLocations.author);
+              }
+        }
+        return self.chosenLocations;
+      }
+    });
+
     // Populate markers and infowindows on click of a marker
     function populateFullMap() {
       //Substitute artLocations with self.locations to track the changes??
@@ -341,9 +361,10 @@ function populateInfoWindow(marker, infowindow) {
           var author = artLocations[i].author;
           var address = artLocations[i].artworkLocation;
           var origin = artLocations[i].origin;
-          var searchName = artLocations[i].author.toLowerCase();
+          var searchArtistName = artLocations[i].author.toLowerCase();
+          var searchSuburbName = artLocations[i].artworkLocation.toLowerCase();
 
-          if (searchName.indexOf(queryString) !== -1) {
+          if ((searchArtistName.indexOf(queryString) !== -1) || (searchSuburbName.indexOf(queryString) !== -1)) {
           var marker = new google.maps.Marker({
               map: map,
               position: position,
