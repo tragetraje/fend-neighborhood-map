@@ -222,15 +222,14 @@ var ViewModel = function() {
           return populateFullMap();
         } else {
           removeMarkers();
-          populateFilteredMap();
+          populateFilteredMap(queryString);
         }
     });
 
-
-
-
     // Populate markers and infowindows on click of a marker
-    function populateFullMap(artLocations) {
+    function populateFullMap() {
+      //Substitute artLocations with self.locations to track the changes??
+      console.log(self.locations());
     for (var i = 0; i < artLocations.length; i++) {
         var position = artLocations[i].coordinates;
         var author = artLocations[i].author;
@@ -334,6 +333,20 @@ function populateInfoWindow(marker, infowindow) {
         infowindow.open(map, marker);
     }
   }
+    // Remove markers from the map
+    //https://developers.google.com/maps/documentation/javascript/examples///marker-remove
+    // Sets the map on all markers in the array
+      function setMapOnAll(map) {
+        for (var i = 0; i < markers.length; i++) {
+          markers[i].setMap(map);
+        }
+      }
+
+      // Deletes all markers in the array by removing references to them
+      function removeMarkers() {
+        setMapOnAll(null);
+        markers = [];
+      }
 }
 
 ko.applyBindings(new ViewModel());
