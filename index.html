@@ -14,7 +14,13 @@
         <p><input type="search" data-bind="textInput: searchQuery" placeholder="Artist's name/artwork location"></p>
 
         <div><span data-bind=
-          "text: searchQuery"></span></div>
+          "text: searchQuery"></span>
+        </div>
+
+        <div>
+          <ul data-bind="foreach: selectLocations"></ul>
+            <li data-bind="text: author, suburb, click: $parent.listLocationSelected"></li>
+        </div>
 
 
     <div id="map"></div>

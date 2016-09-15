@@ -234,14 +234,23 @@ var ViewModel = function() {
           //return artLocations;
           return self.locations;
         } else {
+          console.log("selectLocations 'else' statement");
           self.chosenLocations([]);
-          for (var i = 0; i < artLocations.length; i++) {
-              var author = artLocations[i].author;
+          //for (var i = 0; i < artLocations.length; i++) {
+          //    var author = artLocations[i].author;
 
-              if (author.indexOf(queryString) !== -1) {
-                self.chosenLocations.push(artLocations.author);
-              }
-        }
+          //    if (author.indexOf(queryString) !== -1) {
+          //      self.chosenLocations.push(artLocations.author);
+          //    }
+          //}
+          self.locations().forEach(function(location) {
+            var author = location.author.toLowerCase();
+            var suburb = location.artworkLocation.toLowerCase();
+
+            if ((author.indexOf(queryString) !== -1) || (suburb.indexOf(queryString) !== -1)) {
+              self.chosenLocations.push(location);
+            }
+          })
         return self.chosenLocations;
       }
     });
@@ -414,6 +423,11 @@ function populateInfoWindow(marker, infowindow) {
         setMapOnAll(null);
         markers = [];
       }
+
+      // Opens the marker when listed location is clicked
+      self.listLocationSelected = function(data) {
+        populateInfoWindow(data.marker, largeInfoWindow);
+      };
 }
 
-ko.applyBindings(new ViewModel());
+//ko.applyBindings(new ViewModel());
