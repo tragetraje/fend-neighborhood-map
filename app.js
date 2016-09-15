@@ -333,6 +333,52 @@ function populateInfoWindow(marker, infowindow) {
         infowindow.open(map, marker);
     }
   }
+
+    // Filter the map to searched reult(s) only and place its marker
+    function populateFilteredMap(queryString) {
+      for (var i = 0; i < artLocations.length; i++) {
+          var position = artLocations[i].coordinates;
+          var author = artLocations[i].author;
+          var address = artLocations[i].artworkLocation;
+          var origin = artLocations[i].origin;
+          var searchName = artLocations[i].author.toLowerCase();
+
+          if (searchName.indexOf(queryString) !== -1) {
+          var marker = new google.maps.Marker({
+              map: map,
+              position: position,
+              author: author,
+              origin: origin,
+              address: address,
+              icon: defaultIconColor,
+              animation: google.maps.Animation.DROP,
+              id: i
+          });
+
+          //Add created location marker to marker array
+          markers.push(marker);
+
+          //Make infowindow pop up on click of a marker
+          marker.addListener('click', function() {
+              populateInfoWindow(this, largeInfowindow);
+          });
+
+          //Change marker's color hovering over it and off
+          marker.addListener('mouseover', function() {
+              this.setIcon(highlightedIconColor);
+          });
+          marker.addListener('mouseout', function() {
+              this.setIcon(defaultIconColor);
+          });
+        }
+          //Adjust the boundaries of the map to fit the markers
+          //bounds.extend(markers[i].position);
+
+      }
+      // Extend the boundaries of the map for each marker
+      //map.fitBounds(bounds);
+    }
+
     // Remove markers from the map
     //https://developers.google.com/maps/documentation/javascript/examples///marker-remove
     // Sets the map on all markers in the array
