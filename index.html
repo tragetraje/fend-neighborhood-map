@@ -18,8 +18,9 @@
         </div>
 
         <div>
-          <ul data-bind="foreach: selectLocations"></ul>
-            <li data-bind="text: author, suburb, click: $parent.listLocationSelected"></li>
+          <ul data-bind="foreach: selectLocations">
+                     <li data-bind="text: author"></li>
+                   </ul>
         </div>
 
 

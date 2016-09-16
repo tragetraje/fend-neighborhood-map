@@ -213,6 +213,54 @@ var ViewModel = function() {
     var defaultIconColor = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
     var highlightedIconColor = 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png';
 
+    //Handles the list of locations/chosen locations
+    self.selectLocations = ko.computed(function() {
+           var queryString = self.searchQuery().toLowerCase();
+           console.log(queryString);
+
+           if (queryString === "") {
+             //return artLocations;
+             console.count();
+             return self.locations();
+           } else {
+
+             return ko.utils.arrayFilter(self.locations(), function(location) {
+               var author = location.author.toLowerCase();
+               console.log(author);
+               return author.indexOf(queryString) !== -1;
+             });
+           }
+       });
+
+    //self.selectLocations = ko.computed(function() {
+        //var queryString = self.searchQuery().toLowerCase;
+
+      //  if (!queryString) {
+          //return artLocations;
+      //    return self.locations;
+      //  } else {
+      //    console.log("selectLocations 'else' statement");
+      //    self.chosenLocations([]);
+          //for (var i = 0; i < artLocations.length; i++) {
+          //    var author = artLocations[i].author;
+
+          //    if (author.indexOf(queryString) !== -1) {
+          //      self.chosenLocations.push(artLocations.author);
+          //    }
+          //}
+      //    self.locations().forEach(function(location) {
+      //      var author = location.author.toLowerCase();
+      //      var suburb = location.artworkLocation.toLowerCase();
+
+      //      if ((author.indexOf(queryString) !== -1) || (suburb.indexOf(queryString) !== -1)) {
+        //      self.chosenLocations.push(location);
+        //    }
+          //})
+      //  return self.chosenLocations;
+    //  }
+    //});
+
+
     //Populate full map with markers or chosen locations only
     self.populateMap = ko.computed(function() {
         var queryString = self.searchQuery().toLowerCase();
@@ -224,35 +272,6 @@ var ViewModel = function() {
           removeMarkers();
           populateFilteredMap(queryString);
         }
-    });
-
-    //Handles the list of locations/chosen locations
-    self.selectLocations = ko.computed(function() {
-        var queryString = self.searchQuery().toLowerCase;
-
-        if (!queryString) {
-          //return artLocations;
-          return self.locations;
-        } else {
-          console.log("selectLocations 'else' statement");
-          self.chosenLocations([]);
-          //for (var i = 0; i < artLocations.length; i++) {
-          //    var author = artLocations[i].author;
-
-          //    if (author.indexOf(queryString) !== -1) {
-          //      self.chosenLocations.push(artLocations.author);
-          //    }
-          //}
-          self.locations().forEach(function(location) {
-            var author = location.author.toLowerCase();
-            var suburb = location.artworkLocation.toLowerCase();
-
-            if ((author.indexOf(queryString) !== -1) || (suburb.indexOf(queryString) !== -1)) {
-              self.chosenLocations.push(location);
-            }
-          })
-        return self.chosenLocations;
-      }
     });
 
     // Populate markers and infowindows on click of a marker
