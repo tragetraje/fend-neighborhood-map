@@ -1,5 +1,6 @@
+// Array of art objects to list and show on the map
 var artLocations = [{
-    author: "DEAMS - Parry street",
+    author: "Deams - Parry street",
     origin: "Melbourne",
     artworkLocation: "61 Parry Street, Newcastle West",
     coordinates: {
@@ -180,19 +181,136 @@ var map,
 var markers = [];
 
 
-// Create a map and set the centre to Newcastle
+// Creates a map and set the centre to Newcastle
 function initializeMap() {
     newcastle = new google.maps.LatLng(-32.929927, 151.773169);
     map = new google.maps.Map(document.getElementById('map'), {
         center: newcastle,
         zoom: 15,
-        mapTypeControl: false
+        mapTypeControl: false,
+        styles: [{
+            "featureType": "water",
+            "elementType": "geometry",
+            "stylers": [{
+                "color": "#e9e9e9"
+            }, {
+                "lightness": 17
+            }]
+        }, {
+            "featureType": "landscape",
+            "elementType": "geometry",
+            "stylers": [{
+                "color": "#f5f5f5"
+            }, {
+                "lightness": 20
+            }]
+        }, {
+            "featureType": "road.highway",
+            "elementType": "geometry.fill",
+            "stylers": [{
+                "color": "#ffffff"
+            }, {
+                "lightness": 17
+            }]
+        }, {
+            "featureType": "road.highway",
+            "elementType": "geometry.stroke",
+            "stylers": [{
+                "color": "#ffffff"
+            }, {
+                "lightness": 29
+            }, {
+                "weight": 0.2
+            }]
+        }, {
+            "featureType": "road.arterial",
+            "elementType": "geometry",
+            "stylers": [{
+                "color": "#ffffff"
+            }, {
+                "lightness": 18
+            }]
+        }, {
+            "featureType": "road.local",
+            "elementType": "geometry",
+            "stylers": [{
+                "color": "#ffffff"
+            }, {
+                "lightness": 16
+            }]
+        }, {
+            "featureType": "poi",
+            "elementType": "geometry",
+            "stylers": [{
+                "color": "#f5f5f5"
+            }, {
+                "lightness": 21
+            }]
+        }, {
+            "featureType": "poi.park",
+            "elementType": "geometry",
+            "stylers": [{
+                "color": "#dedede"
+            }, {
+                "lightness": 21
+            }]
+        }, {
+            "elementType": "labels.text.stroke",
+            "stylers": [{
+                "visibility": "on"
+            }, {
+                "color": "#ffffff"
+            }, {
+                "lightness": 16
+            }]
+        }, {
+            "elementType": "labels.text.fill",
+            "stylers": [{
+                "saturation": 36
+            }, {
+                "color": "#333333"
+            }, {
+                "lightness": 40
+            }]
+        }, {
+            "elementType": "labels.icon",
+            "stylers": [{
+                "visibility": "off"
+            }]
+        }, {
+            "featureType": "transit",
+            "elementType": "geometry",
+            "stylers": [{
+                "color": "#f2f2f2"
+            }, {
+                "lightness": 19
+            }]
+        }, {
+            "featureType": "administrative",
+            "elementType": "geometry.fill",
+            "stylers": [{
+                "color": "#fefefe"
+            }, {
+                "lightness": 20
+            }]
+        }, {
+            "featureType": "administrative",
+            "elementType": "geometry.stroke",
+            "stylers": [{
+                "color": "#fefefe"
+            }, {
+                "lightness": 17
+            }, {
+                "weight": 1.2
+            }]
+        }]
     });
     ko.applyBindings(new ViewModel());
 }
 
+// My ViewModel
 var ViewModel = function() {
-    //Make a reference of this in a new variable to avoid its tracking
+    // Makes a reference of this in a new variable to avoid its tracking
     var self = this;
 
     self.searchQuery = ko.observable('');
@@ -205,248 +323,222 @@ var ViewModel = function() {
     //});
 
 
-    // Create infowindow object for a marker to display information, pics etc.
+    // Creates infowindow object for a marker to display information, pics etc.
     var largeInfowindow = new google.maps.InfoWindow();
+
+    // Limits the map to display all the locations on the screen
     var bounds = new google.maps.LatLngBounds();
 
-    // Style the markers
+    // Styles the markers
     var defaultIconColor = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
     var highlightedIconColor = 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png';
 
-    //Handles the list of locations/chosen locations
+    // Handles the list of locations/chosen locations
     self.selectLocations = ko.computed(function() {
-           var queryString = self.searchQuery().toLowerCase();
-           console.log(queryString);
+        var queryString = self.searchQuery().toLowerCase();
+        console.log(queryString);
 
-           if (queryString === "") {
-             //return artLocations;
-             console.count();
-             return self.locations();
-           } else {
-
-             return ko.utils.arrayFilter(self.locations(), function(location) {
-               var author = location.author.toLowerCase();
-               console.log(author);
-               return author.indexOf(queryString) !== -1;
-             });
-           }
-       });
-
+        if (queryString === "") {
+            //return artLocations;
+            console.count();
+            return self.locations();
+        } else {
+            return ko.utils.arrayFilter(self.locations(), function(location) {
+                var author = location.author.toLowerCase();
+                console.log(author);
+                return author.indexOf(queryString) !== -1;
+            });
+        }
+    });
+    //Old function to handle listed locations
     //self.selectLocations = ko.computed(function() {
-        //var queryString = self.searchQuery().toLowerCase;
+    //var queryString = self.searchQuery().toLowerCase;
 
-      //  if (!queryString) {
-          //return artLocations;
-      //    return self.locations;
-      //  } else {
-      //    console.log("selectLocations 'else' statement");
-      //    self.chosenLocations([]);
-          //for (var i = 0; i < artLocations.length; i++) {
-          //    var author = artLocations[i].author;
+    //  if (!queryString) {
+    //return artLocations;
+    //    return self.locations;
+    //  } else {
+    //    console.log("selectLocations 'else' statement");
+    //    self.chosenLocations([]);
+    //for (var i = 0; i < artLocations.length; i++) {
+    //    var author = artLocations[i].author;
 
-          //    if (author.indexOf(queryString) !== -1) {
-          //      self.chosenLocations.push(artLocations.author);
-          //    }
-          //}
-      //    self.locations().forEach(function(location) {
-      //      var author = location.author.toLowerCase();
-      //      var suburb = location.artworkLocation.toLowerCase();
+    //    if (author.indexOf(queryString) !== -1) {
+    //      self.chosenLocations.push(artLocations.author);
+    //    }
+    //}
+    //    self.locations().forEach(function(location) {
+    //      var author = location.author.toLowerCase();
+    //      var suburb = location.artworkLocation.toLowerCase();
 
-      //      if ((author.indexOf(queryString) !== -1) || (suburb.indexOf(queryString) !== -1)) {
-        //      self.chosenLocations.push(location);
-        //    }
-          //})
-      //  return self.chosenLocations;
+    //      if ((author.indexOf(queryString) !== -1) || (suburb.indexOf(queryString) !== -1)) {
+    //      self.chosenLocations.push(location);
+    //    }
+    //})
+    //  return self.chosenLocations;
     //  }
     //});
 
 
-    //Populate full map with markers or chosen locations only
+    // Handles the population of full map with markers or searched locations/authors only
     self.populateMap = ko.computed(function() {
         var queryString = self.searchQuery().toLowerCase();
         var filteredLocations = [];
 
         if (!queryString) {
-          return populateFullMap();
+            return populateFullMap();
         } else {
-          removeMarkers();
-          populateFilteredMap(queryString);
+            removeMarkers();
+            populateFilteredMap(queryString);
         }
     });
 
-    // Populate markers and infowindows on click of a marker
+    // Populates full map with markers and infowindows on click of a marker
     function populateFullMap() {
-      //Substitute artLocations with self.locations to track the changes??
-      console.log(self.locations());
-    for (var i = 0; i < artLocations.length; i++) {
-        var position = artLocations[i].coordinates;
-        var author = artLocations[i].author;
-        var address = artLocations[i].artworkLocation;
-        var origin = artLocations[i].origin;
-        var marker = new google.maps.Marker({
-            map: map,
-            position: position,
-            author: author,
-            origin: origin,
-            address: address,
-            icon: defaultIconColor,
-            animation: google.maps.Animation.DROP,
-            id: i
-        });
-
-        //Add created location marker to marker array
-        markers.push(marker);
-
-        //Make infowindow pop up on click of a marker
-        marker.addListener('click', function() {
-            populateInfoWindow(this, largeInfowindow);
-        });
-
-        //Change marker's color hovering over it and off
-        marker.addListener('mouseover', function() {
-            this.setIcon(highlightedIconColor);
-        });
-        marker.addListener('mouseout', function() {
-            this.setIcon(defaultIconColor);
-        });
-
-        //Adjust the boundaries of the map to fit the markers
-        bounds.extend(markers[i].position);
-    }
-    // Extend the boundaries of the map for each marker
-    map.fitBounds(bounds);
-  }
-
-// Display infowindow and flickr image
-function populateInfoWindow(marker, infowindow) {
-    if (infowindow.marker != marker) {
-        infowindow.setContent('');
-        infowindow.marker = marker;
-        infowindow.addListener('closeclick', function() {
-            infowindow.marker = null;
-        });
-        // Function declaration
-        //https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/function
-        // Flickr API call to get streetart image
-        function getFlickrImage() {
-          var API_KEY = 'dd45d7051de5b76009350707895811ae';
-          var USER_ID = '144843076%40N03';
-          var base_url = 'https://api.flickr.com/services/rest/?';
-          var method = 'flickr.photos.search';
-          var query =
-          marker.author.replace(/ -| &/, '');
-
-          // Flickr API request url
-          var url = base_url +
-               'method=' + method +
-               '&api_key=' + API_KEY +
-               '&user_id=' + USER_ID +
-               '&text=' + query +
-               '&format=json' +
-               '&nojsoncallback=1';
-
-            // Flickr API search method url
-            /*
-            var flickrUrl = 'https://api.flickr.com/services/rest/';
-            flickrUrl += '?' + $.param({
-                'method': 'flickr.photos.search',
-                'api_key': 'dd45d7051de5b76009350707895811ae',
-                'user_id': '144843076%40N03',
-                'text': title + address,
-                'format': 'json',
-                'nojsoncallback': 1
+        for (var i = 0; i < self.locations().length; i++) {
+            var position = self.locations()[i].coordinates;
+            var author = self.locations()[i].author;
+            var address = self.locations()[i].artworkLocation;
+            var origin = self.locations()[i].origin;
+            var marker = new google.maps.Marker({
+                map: map,
+                position: position,
+                author: author,
+                origin: origin,
+                address: address,
+                icon: defaultIconColor,
+                animation: google.maps.Animation.DROP,
+                id: i
             });
 
-            var flickrUrl = 'https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=dd45d7051de5b76009350707895811ae&user_id=144843076%40N03&text=adnate+numskull&format=json&nojsoncallback=1';
-            */
-            $.getJSON(url, function(data) {
-                console.log(data);
-                var detail = data.photos.photo[0];
-                if (detail) {
-                infowindow.setContent('<div>' + marker.author + ', ' + marker.origin + '<br>' + marker.address + '</div><div id="flckr-img"><img class="infowndw-img" src="https://farm' + detail.farm + '.staticflickr.com/' + detail.server + '/' + detail.id + '_' + detail.secret + '_n.jpg"></div>');
-              } else {
-                infowindow.setContent('<div> Nothing Found </div>');
-              }
-                /*
-                infowindow.setContent('<div>' + marker.title + '</div><div id="flckr-img"><img class="infowndw-img" src="https://farm' + detail.farm + '.staticflickr.com/' + detail.server + '/' + detail.id + '_' + detail.secret + '_n.jpg"></div>');
-                var image = document.getElementById('flckr-img');
-                */
-            }).fail(function() {
-                infowindow.setContent('<div>' + marker.author + '</div>' +
-                    '<div>No Flickr Image Found</div>');
+            // Adds created location marker to marker array
+            markers.push(marker);
+
+            // Makes infowindow pop up on click of a marker
+            marker.addListener('click', function() {
+                populateInfoWindow(this, largeInfowindow);
             });
-        };
-        //invoking function declaration
-        getFlickrImage();
-        infowindow.open(map, marker);
-    }
-  }
 
-    // Filter the map to searched reult(s) only and place its marker
-    function populateFilteredMap(queryString) {
-      for (var i = 0; i < artLocations.length; i++) {
-          var position = artLocations[i].coordinates;
-          var author = artLocations[i].author;
-          var address = artLocations[i].artworkLocation;
-          var origin = artLocations[i].origin;
-          var searchArtistName = artLocations[i].author.toLowerCase();
-          var searchSuburbName = artLocations[i].artworkLocation.toLowerCase();
+            // Changes marker's color hovering over it and off
+            marker.addListener('mouseover', function() {
+                this.setIcon(highlightedIconColor);
+            });
+            marker.addListener('mouseout', function() {
+                this.setIcon(defaultIconColor);
+            });
 
-          if ((searchArtistName.indexOf(queryString) !== -1) || (searchSuburbName.indexOf(queryString) !== -1)) {
-          var marker = new google.maps.Marker({
-              map: map,
-              position: position,
-              author: author,
-              origin: origin,
-              address: address,
-              icon: defaultIconColor,
-              animation: google.maps.Animation.DROP,
-              id: i
-          });
-
-          //Add created location marker to marker array
-          markers.push(marker);
-
-          //Make infowindow pop up on click of a marker
-          marker.addListener('click', function() {
-              populateInfoWindow(this, largeInfowindow);
-          });
-
-          //Change marker's color hovering over it and off
-          marker.addListener('mouseover', function() {
-              this.setIcon(highlightedIconColor);
-          });
-          marker.addListener('mouseout', function() {
-              this.setIcon(defaultIconColor);
-          });
+            // Adjust the boundaries of the map to fit the markers
+            bounds.extend(markers[i].position);
         }
-          //Adjust the boundaries of the map to fit the markers
-          //bounds.extend(markers[i].position);
+        // Extend the boundaries of the map for each marker
+        map.fitBounds(bounds);
+    }
 
-      }
-      // Extend the boundaries of the map for each marker
-      //map.fitBounds(bounds);
+    // Displays infowindow and flickr image
+    function populateInfoWindow(marker, infowindow) {
+        if (infowindow.marker != marker) {
+            infowindow.setContent('');
+            infowindow.marker = marker;
+            infowindow.addListener('closeclick', function() {
+                infowindow.marker = null;
+            });
+
+            // Flickr API call to get streetart image
+            function getFlickrImage() {
+                var base_url = 'https://api.flickr.com/services/rest/?';
+                var API_KEY = 'dd45d7051de5b76009350707895811ae';
+                var USER_ID = '144843076%40N03';
+                var method = 'flickr.photos.search';
+                var query =
+                    marker.author.replace(/ -| &/, '');
+
+                // Flickr API request url
+                var url = base_url +
+                    'method=' + method +
+                    '&api_key=' + API_KEY +
+                    '&user_id=' + USER_ID +
+                    '&text=' + query +
+                    '&format=json' +
+                    '&nojsoncallback=1';
+
+                $.getJSON(url, function(data) {
+                    //console.log(data);
+                    var detail = data.photos.photo[0];
+                    if (detail) {
+                        infowindow.setContent('<div>' + marker.author + ', ' + marker.origin + '<br>' + marker.address + '</div><div id="flckr-img"><img class="infowndw-img" src="https://farm' + detail.farm + '.staticflickr.com/' + detail.server + '/' + detail.id + '_' + detail.secret + '_n.jpg"></div>');
+                    } else {
+                        infowindow.setContent('<div> Nothing Found </div>');
+                    }
+                    // Fallback for failed request to get an image
+                }).fail(function() {
+                    infowindow.setContent('<div>No Flickr Image Found for ' + marker.author + '</div>');
+                });
+            }
+            // Invokes function declaration
+            getFlickrImage();
+            infowindow.open(map, marker);
+        }
+    }
+
+    // Filters the map to searched results only and place its markers
+    function populateFilteredMap(queryString) {
+        for (var i = 0; i < self.locations().length; i++) {
+            var position = self.locations()[i].coordinates;
+            var author = self.locations()[i].author;
+            var address = self.locations()[i].artworkLocation;
+            var origin = self.locations()[i].origin;
+            var searchArtistName = self.locations()[i].author.toLowerCase();
+            var searchSuburbName = self.locations()[i].artworkLocation.toLowerCase();
+
+            if ((searchArtistName.indexOf(queryString) !== -1) || (searchSuburbName.indexOf(queryString) !== -1)) {
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: position,
+                    author: author,
+                    origin: origin,
+                    address: address,
+                    icon: defaultIconColor,
+                    animation: google.maps.Animation.DROP,
+                    id: i
+                });
+
+                // Adds created location marker to marker array
+                markers.push(marker);
+
+                // Make infowindow pop up on click of a marker
+                marker.addListener('click', function() {
+                    populateInfoWindow(this, largeInfowindow);
+                });
+
+                // Change marker's color hovering over it and off
+                marker.addListener('mouseover', function() {
+                    this.setIcon(highlightedIconColor);
+                });
+                marker.addListener('mouseout', function() {
+                    this.setIcon(defaultIconColor);
+                });
+            }
+        }
+
     }
 
     // Remove markers from the map
-    //https://developers.google.com/maps/documentation/javascript/examples///marker-remove
+    //https://developers.google.com/maps/documentation/javascript/examples/marker-remove
     // Sets the map on all markers in the array
-      function setMapOnAll(map) {
+    function setMapOnAll(map) {
         for (var i = 0; i < markers.length; i++) {
-          markers[i].setMap(map);
+            markers[i].setMap(map);
         }
-      }
+    }
 
-      // Deletes all markers in the array by removing references to them
-      function removeMarkers() {
+    // Deletes all markers in the array by removing references to them
+    function removeMarkers() {
         setMapOnAll(null);
         markers = [];
-      }
+    }
 
-      // Opens the marker when listed location is clicked
-      self.listLocationSelected = function(data) {
+    // Opens the marker when listed location is clicked
+    self.listLocationSelected = function(data) {
         populateInfoWindow(data.marker, largeInfoWindow);
-      };
-}
-
-//ko.applyBindings(new ViewModel());
+    };
+};
