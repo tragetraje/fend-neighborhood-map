@@ -324,7 +324,7 @@ var ViewModel = function() {
 
 
     // Creates infowindow object for a marker to display information, pics etc.
-    var largeInfowindow = new google.maps.InfoWindow();
+    var largeInfoWindow = new google.maps.InfoWindow();
 
     // Limits the map to display all the locations on the screen
     var bounds = new google.maps.LatLngBounds();
@@ -340,12 +340,12 @@ var ViewModel = function() {
 
         if (queryString === "") {
             //return artLocations;
-            console.count();
+            //console.count();
             return self.locations();
         } else {
             return ko.utils.arrayFilter(self.locations(), function(location) {
                 var author = location.author.toLowerCase();
-                console.log(author);
+                //console.log(author);
                 return author.indexOf(queryString) !== -1;
             });
         }
@@ -416,7 +416,7 @@ var ViewModel = function() {
 
             // Makes infowindow pop up on click of a marker
             marker.addListener('click', function() {
-                populateInfoWindow(this, largeInfowindow);
+                populateInfoWindow(this, largeInfoWindow);
             });
 
             // Changes marker's color hovering over it and off
@@ -437,11 +437,8 @@ var ViewModel = function() {
     // Displays infowindow and flickr image
     function populateInfoWindow(marker, infowindow) {
         if (infowindow.marker != marker) {
-            infowindow.setContent('');
+            //infowindow.setContent('');
             infowindow.marker = marker;
-            infowindow.addListener('closeclick', function() {
-                infowindow.marker = null;
-            });
 
             // Flickr API call to get streetart image
             function getFlickrImage() {
@@ -477,7 +474,12 @@ var ViewModel = function() {
             // Invokes function declaration
             getFlickrImage();
             infowindow.open(map, marker);
-        }
+
+
+            infowindow.addListener('closeclick', function() {
+                infowindow.marker = null;
+            });
+          }
     }
 
     // Filters the map to searched results only and place its markers
@@ -507,7 +509,7 @@ var ViewModel = function() {
 
                 // Make infowindow pop up on click of a marker
                 marker.addListener('click', function() {
-                    populateInfoWindow(this, largeInfowindow);
+                    populateInfoWindow(this, largeInfoWindow);
                 });
 
                 // Change marker's color hovering over it and off
@@ -540,5 +542,6 @@ var ViewModel = function() {
     // Opens the marker when listed location is clicked
     self.listLocationSelected = function(data) {
         populateInfoWindow(data.marker, largeInfoWindow);
+        console.log(data);
     };
 };
