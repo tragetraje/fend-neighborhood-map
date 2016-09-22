@@ -11,6 +11,13 @@ body {
   float: left;
 }
 
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
 /*
 {
   height: 100%;

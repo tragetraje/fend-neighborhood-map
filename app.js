@@ -336,7 +336,7 @@ var ViewModel = function() {
     // Handles the list of locations/chosen locations
     self.selectLocations = ko.computed(function() {
         var queryString = self.searchQuery().toLowerCase();
-        console.log(queryString);
+        //console.log(queryString);
 
         if (queryString === "") {
             //return artLocations;
@@ -427,6 +427,9 @@ var ViewModel = function() {
                 this.setIcon(defaultIconColor);
             });
 
+            self.locations()[i].marker = marker;
+            //console.log(marker);
+
             // Adjust the boundaries of the map to fit the markers
             bounds.extend(markers[i].position);
         }
@@ -437,9 +440,8 @@ var ViewModel = function() {
     // Displays infowindow and flickr image
     function populateInfoWindow(marker, infowindow) {
         if (infowindow.marker != marker) {
-            //infowindow.setContent('');
+            infowindow.setContent('');
             infowindow.marker = marker;
-
             // Flickr API call to get streetart image
             function getFlickrImage() {
                 var base_url = 'https://api.flickr.com/services/rest/?';
@@ -482,6 +484,12 @@ var ViewModel = function() {
           }
     }
 
+        // Opens the marker when listed location is clicked
+        self.listLocationSelected = function(data) {
+          //console.log(data.marker);
+          populateInfoWindow(data.marker, largeInfoWindow);
+        };
+
     // Filters the map to searched results only and place its markers
     function populateFilteredMap(queryString) {
         for (var i = 0; i < self.locations().length; i++) {
@@ -519,6 +527,8 @@ var ViewModel = function() {
                 marker.addListener('mouseout', function() {
                     this.setIcon(defaultIconColor);
                 });
+
+                self.locations()[i].marker = marker;
             }
         }
 
@@ -539,9 +549,4 @@ var ViewModel = function() {
         markers = [];
     }
 
-    // Opens the marker when listed location is clicked
-    self.listLocationSelected = function(data) {
-        populateInfoWindow(data.marker, largeInfoWindow);
-        console.log(data);
-    };
 };
