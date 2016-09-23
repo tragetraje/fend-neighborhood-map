@@ -481,14 +481,14 @@ var ViewModel = function() {
             infowindow.addListener('closeclick', function() {
                 infowindow.marker = null;
             });
-          }
+        }
     }
 
-        // Opens the marker when listed location is clicked
-        self.listLocationSelected = function(data) {
-          //console.log(data.marker);
-          populateInfoWindow(data.marker, largeInfoWindow);
-        };
+    // Opens the marker when listed location is clicked
+    self.listLocationSelected = function(data) {
+        //console.log(data.marker);
+        populateInfoWindow(data.marker, largeInfoWindow);
+    };
 
     // Filters the map to searched results only and place its markers
     function populateFilteredMap(queryString) {

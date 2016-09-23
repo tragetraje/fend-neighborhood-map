@@ -2,12 +2,17 @@
 <html>
   <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Street Art Map of Newcastle, Australia</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css?family=Bree+Serif" rel="stylesheet">
   </head>
   <body>
-    <div class="container">
+    <div class="container-fluid full">
+      <div class="row full row-full">
+        <div class="col-xs-12 col-sm-3 col-full">
         <h1>Newcastle Street Art Map</h1>
         <p>Newcastle is a harbor city in the Australian state of New South Wales. Its plentiful beaches are linked by the Bathers Way, a coastal walk stretching between Nobbys Beach and Merewether Beach. But not only superb surf beaches, historical architecture and a sun-drenched climate the city is famous for. There is fine dining, hip bars, quirky boutiques, and a diverse arts scene. And it's home to some great street art too. Go and explore it!</p>
 
@@ -18,13 +23,16 @@
         </div>
 
         <div>
-          <ul data-bind="foreach: selectLocations">
+          <ul class="list-group" data-bind="foreach: selectLocations">
                      <a href="#"><li data-bind="text: author, click: $parent.listLocationSelected"></li>
                    </ul>
         </div>
+      </div>
 
-
+    <div class="col-xs-12 col-sm-9 col-full">
     <div id="map"></div>
+  </div>
+  </div>
   </div>
 
 
