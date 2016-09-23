@@ -1,46 +1,51 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Street Art Map of Newcastle, Australia</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css?family=Bree+Serif" rel="stylesheet">
-  </head>
-  <body>
-    <div class="container-fluid full">
-      <div class="row full row-full">
-        <div class="col-xs-12 col-sm-3 col-full">
-        <h1>Newcastle Street Art Map</h1>
-        <p>Newcastle is a harbor city in the Australian state of New South Wales. Its plentiful beaches are linked by the Bathers Way, a coastal walk stretching between Nobbys Beach and Merewether Beach. But not only superb surf beaches, historical architecture and a sun-drenched climate the city is famous for. There is fine dining, hip bars, quirky boutiques, and a diverse arts scene. And it's home to some great street art too. Go and explore it!</p>
+</head>
 
-        <p><input type="search" data-bind="textInput: searchQuery" placeholder="Artist's name/artwork location"></p>
+<body>
+    <div class="container fill">
+        <div class="row fill row-fill">
+            <div class="col-xs-12 col-sm-3 col-fill">
+                <h6 class="header">NEWCASTLE WALKS</h6>
+                <h2 class="header">Newcastle Street Art Map</h2>
+                <p class="description">Newcastle is a harbor city in the Australian state of New South Wales. Its plentiful beaches are linked by the Bathers Way, a coastal walk stretching between Nobbys Beach and Merewether Beach. But not only superb surf beaches, historical
+                    architecture and a sun-drenched climate the city is famous for. There is fine dining, hip bars, quirky boutiques, and a diverse arts scene. And it's home to some great street art too. Go and explore it!</p>
 
-        <div><span data-bind=
-          "text: searchQuery"></span>
+                <div class="search-bar">
+                    <input class="search-input" type="search" data-bind="textInput: searchQuery" placeholder="Artist's name">
+
+                    <div><span class="search-output" data-bind="text: searchQuery"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <ul class="list-group" data-bind="foreach: selectLocations">
+                        <a class="link-color" href="#">
+                            <li data-bind="text: author, click: $parent.listLocationSelected">
+                            </li>
+                        </a>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-9 col-fill">
+                <div id="map"></div>
+            </div>
         </div>
-
-        <div>
-          <ul class="list-group" data-bind="foreach: selectLocations">
-                     <a href="#"><li data-bind="text: author, click: $parent.listLocationSelected"></li>
-                   </ul>
-        </div>
-      </div>
-
-    <div class="col-xs-12 col-sm-9 col-full">
-    <div id="map"></div>
-  </div>
-  </div>
-  </div>
-
+    </div>
 
     <script type="text/javascript" src="jquery-3.1.0.js"></script>
     <script type="text/javascript" src="knockout-3.4.0.js"></script>
     <script src="app.js"></script>
-    <script async defer
-        src="https://maps.googleapis.com/maps/api/js?&key=AIzaSyBYixdJNss4B8FmoYDKJgG5mgr1q1zhRFg&libraries=geometry&v=3&callback=initializeMap">
+    <script async defer src="https://maps.googleapis.com/maps/api/js?&key=AIzaSyBYixdJNss4B8FmoYDKJgG5mgr1q1zhRFg&libraries=geometry&v=3&callback=initializeMap">
     </script>
-  </body>
+</body>
+
 </html>
