@@ -548,5 +548,8 @@ var ViewModel = function() {
         setMapOnAll(null);
         markers = [];
     }
+};
 
+var mapsInitError = function() {
+  alert("Google Maps failed to load");
 };
