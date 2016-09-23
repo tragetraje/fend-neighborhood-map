@@ -1,6 +1,6 @@
 // Array of art objects to list and show on the map
 var artLocations = [{
-    author: "Deams - Parry street",
+    author: "Deams on Parry street",
     origin: "Melbourne",
     artworkLocation: "61 Parry Street, Newcastle West",
     coordinates: {
@@ -92,7 +92,7 @@ var artLocations = [{
     },
     web: ["http://tristaneaton.com"]
 }, {
-    author: "Jumbo - Thorn Street",
+    author: "Jumbo on Thorn Street",
     artworkLocation: "Thorn Street, Newcastle",
     coordinates: {
         "lat": -32.927170,
@@ -116,7 +116,7 @@ var artLocations = [{
     },
     web: ["http://www.askew1.com/"]
 }, {
-    author: "Adnate - Wickham",
+    author: "Adnate in Wickham",
     origin: "Melbourne",
     artworkLocation: "2 Bishopsgate Street, Wickham",
     coordinates: {
@@ -167,7 +167,7 @@ var artLocations = [{
     },
     web: ["www.iamskulk.com", ""]
 }, {
-    author: "Adnate - Bolton street",
+    author: "Adnate on Bolton street",
     origin: "Melbourne",
     artworkLocation: "Bolton street, Newcastle",
     coordinates: {
@@ -315,13 +315,6 @@ var ViewModel = function() {
 
     self.searchQuery = ko.observable('');
     self.locations = ko.observableArray(artLocations);
-    self.chosenLocations = ko.observableArray();
-
-    //Writes user's search query to input box and console
-    //self.logToConsole = ko.computed(function() {
-    //  console.log(self.searchQuery());
-    //});
-
 
     // Creates infowindow object for a marker to display information, pics etc.
     var largeInfoWindow = new google.maps.InfoWindow();
@@ -350,36 +343,7 @@ var ViewModel = function() {
             });
         }
     });
-    //Old function to handle listed locations
-    //self.selectLocations = ko.computed(function() {
-    //var queryString = self.searchQuery().toLowerCase;
-
-    //  if (!queryString) {
-    //return artLocations;
-    //    return self.locations;
-    //  } else {
-    //    console.log("selectLocations 'else' statement");
-    //    self.chosenLocations([]);
-    //for (var i = 0; i < artLocations.length; i++) {
-    //    var author = artLocations[i].author;
-
-    //    if (author.indexOf(queryString) !== -1) {
-    //      self.chosenLocations.push(artLocations.author);
-    //    }
-    //}
-    //    self.locations().forEach(function(location) {
-    //      var author = location.author.toLowerCase();
-    //      var suburb = location.artworkLocation.toLowerCase();
-
-    //      if ((author.indexOf(queryString) !== -1) || (suburb.indexOf(queryString) !== -1)) {
-    //      self.chosenLocations.push(location);
-    //    }
-    //})
-    //  return self.chosenLocations;
-    //  }
-    //});
-
-
+    
     // Handles the population of full map with markers or searched locations/authors only
     self.populateMap = ko.computed(function() {
         var queryString = self.searchQuery().toLowerCase();
@@ -449,7 +413,7 @@ var ViewModel = function() {
                 var USER_ID = '144843076%40N03';
                 var method = 'flickr.photos.search';
                 var query =
-                    marker.author.replace(/ -| &/, '');
+                    marker.author.replace(/ on| in| &/, '');
 
                 // Flickr API request url
                 var url = base_url +
@@ -464,7 +428,7 @@ var ViewModel = function() {
                     //console.log(data);
                     var detail = data.photos.photo[0];
                     if (detail) {
-                        infowindow.setContent('<div>' + marker.author + ', ' + marker.origin + '<br>' + marker.address + '</div><div id="flckr-img"><img class="infowndw-img" src="https://farm' + detail.farm + '.staticflickr.com/' + detail.server + '/' + detail.id + '_' + detail.secret + '_n.jpg"></div>');
+                        infowindow.setContent('<div><strong>' + marker.author + '</strong><br>' + marker.address + '</div><div id="flckr-img"><img class="infowndw-img" src="https://farm' + detail.farm + '.staticflickr.com/' + detail.server + '/' + detail.id + '_' + detail.secret + '_n.jpg"></div>');
                     } else {
                         infowindow.setContent('<div> Nothing Found </div>');
                     }
