@@ -332,7 +332,6 @@ var ViewModel = function() {
         //console.log(queryString);
 
         if (queryString === "") {
-            //return artLocations;
             //console.count();
             return self.locations();
         } else {
@@ -343,7 +342,7 @@ var ViewModel = function() {
             });
         }
     });
-    
+
     // Handles the population of full map with markers or searched locations/authors only
     self.populateMap = ko.computed(function() {
         var queryString = self.searchQuery().toLowerCase();
@@ -381,14 +380,7 @@ var ViewModel = function() {
             // Makes infowindow pop up on click of a marker
             marker.addListener('click', function() {
                 populateInfoWindow(this, largeInfoWindow);
-            });
-
-            // Changes marker's color hovering over it and off
-            marker.addListener('mouseover', function() {
                 this.setIcon(highlightedIconColor);
-            });
-            marker.addListener('mouseout', function() {
-                this.setIcon(defaultIconColor);
             });
 
             self.locations()[i].marker = marker;
@@ -444,6 +436,7 @@ var ViewModel = function() {
 
             infowindow.addListener('closeclick', function() {
                 infowindow.marker = null;
+                marker.setIcon(defaultIconColor);
             });
         }
     }
