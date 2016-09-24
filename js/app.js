@@ -445,6 +445,7 @@ var ViewModel = function() {
     self.listLocationSelected = function(data) {
         //console.log(data.marker);
         populateInfoWindow(data.marker, largeInfoWindow);
+        data.marker.setIcon(highlightedIconColor);
     };
 
     // Filters the map to searched results only and place its markers
