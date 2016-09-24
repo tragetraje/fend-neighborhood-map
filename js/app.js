@@ -346,7 +346,6 @@ var ViewModel = function() {
     // Handles the population of full map with markers or searched locations/authors only
     self.populateMap = ko.computed(function() {
         var queryString = self.searchQuery().toLowerCase();
-        var filteredLocations = [];
 
         if (!queryString) {
             return populateFullMap();
@@ -358,7 +357,7 @@ var ViewModel = function() {
 
     // Populates full map with markers and infowindows on click of a marker
     function populateFullMap() {
-        for (var i = 0; i < self.locations().length; i++) {
+        for (var i = 0, len = self.locations().length; i < len; i++) {
             var position = self.locations()[i].coordinates;
             var author = self.locations()[i].author;
             var address = self.locations()[i].artworkLocation;
@@ -450,7 +449,7 @@ var ViewModel = function() {
 
     // Filters the map to searched results only and place its markers
     function populateFilteredMap(queryString) {
-        for (var i = 0; i < self.locations().length; i++) {
+        for (var i = 0, len = self.locations().length; i < len; i++) {
             var position = self.locations()[i].coordinates;
             var author = self.locations()[i].author;
             var address = self.locations()[i].artworkLocation;
@@ -476,14 +475,7 @@ var ViewModel = function() {
                 // Make infowindow pop up on click of a marker
                 marker.addListener('click', function() {
                     populateInfoWindow(this, largeInfoWindow);
-                });
-
-                // Change marker's color hovering over it and off
-                marker.addListener('mouseover', function() {
                     this.setIcon(highlightedIconColor);
-                });
-                marker.addListener('mouseout', function() {
-                    this.setIcon(defaultIconColor);
                 });
 
                 self.locations()[i].marker = marker;
@@ -497,7 +489,8 @@ var ViewModel = function() {
     // Sets the map on all markers in the array
     function setMapOnAll(map) {
         for (var i = 0; i < markers.length; i++) {
-            markers[i].setMap(map);
+            //markers[i].setMap(map);
+            markers[i].setVisible(false);
         }
     }
 
