@@ -348,49 +348,12 @@ var ViewModel = function() {
         var queryString = self.searchQuery().toLowerCase();
 
         if (!queryString) {
-            return populateFullMap();
-        } else {
+            populateMap(queryString);
+          } else {
             removeMarkers();
-            populateFilteredMap(queryString);
+            populateMap(queryString);
         }
     });
-
-    // Populates full map with markers and infowindows on click of a marker
-    function populateFullMap() {
-        for (var i = 0, len = self.locations().length; i < len; i++) {
-            var position = self.locations()[i].coordinates;
-            var author = self.locations()[i].author;
-            var address = self.locations()[i].artworkLocation;
-            var origin = self.locations()[i].origin;
-            var marker = new google.maps.Marker({
-                map: map,
-                position: position,
-                author: author,
-                origin: origin,
-                address: address,
-                icon: defaultIconColor,
-                animation: google.maps.Animation.DROP,
-                id: i
-            });
-
-            // Adds created location marker to marker array
-            markers.push(marker);
-
-            // Makes infowindow pop up on click of a marker
-            marker.addListener('click', function() {
-                populateInfoWindow(this, largeInfoWindow);
-                this.setIcon(highlightedIconColor);
-            });
-
-            self.locations()[i].marker = marker;
-            //console.log(marker);
-
-            // Adjust the boundaries of the map to fit the markers
-            bounds.extend(markers[i].position);
-        }
-        // Extend the boundaries of the map for each marker
-        map.fitBounds(bounds);
-    }
 
     // Displays infowindow and flickr image
     function populateInfoWindow(marker, infowindow) {
@@ -448,7 +411,7 @@ var ViewModel = function() {
     };
 
     // Filters the map to searched results only and place its markers
-    function populateFilteredMap(queryString) {
+    function populateMap(queryString) {
         for (var i = 0, len = self.locations().length; i < len; i++) {
             var position = self.locations()[i].coordinates;
             var author = self.locations()[i].author;
@@ -457,7 +420,34 @@ var ViewModel = function() {
             var searchArtistName = self.locations()[i].author.toLowerCase();
             var searchSuburbName = self.locations()[i].artworkLocation.toLowerCase();
 
-            if ((searchArtistName.indexOf(queryString) !== -1) || (searchSuburbName.indexOf(queryString) !== -1)) {
+            if (queryString === "") {
+              var marker = new google.maps.Marker({
+                  map: map,
+                  position: position,
+                  author: author,
+                  origin: origin,
+                  address: address,
+                  icon: defaultIconColor,
+                  animation: google.maps.Animation.DROP,
+                  id: i
+              });
+              // Adds created location marker to marker array
+                      markers.push(marker);
+
+              //         // Makes infowindow pop up on click of a marker
+                      marker.addListener('click', function() {
+                           populateInfoWindow(this, largeInfoWindow);
+                           this.setIcon(highlightedIconColor);
+                       });
+
+                       self.locations()[i].marker = marker;
+                       //console.log(marker);
+
+                       // Adjust the boundaries of the map to fit the markers
+                       bounds.extend(markers[i].position);
+
+            } else {
+              if ((searchArtistName.indexOf(queryString) !== -1) || (searchSuburbName.indexOf(queryString) !== -1)) {
                 var marker = new google.maps.Marker({
                     map: map,
                     position: position,
@@ -469,19 +459,28 @@ var ViewModel = function() {
                     id: i
                 });
 
-                // Adds created location marker to marker array
-                markers.push(marker);
 
-                // Make infowindow pop up on click of a marker
-                marker.addListener('click', function() {
-                    populateInfoWindow(this, largeInfoWindow);
-                    this.setIcon(highlightedIconColor);
-                });
+                  // Adds created location marker to marker array
+                  markers.push(marker);
 
-                self.locations()[i].marker = marker;
+                  // Makes infowindow pop up on click of a marker
+                  marker.addListener('click', function() {
+                      populateInfoWindow(this, largeInfoWindow);
+                      this.setIcon(highlightedIconColor);
+                  });
+
+                  self.locations()[i].marker = marker;
+
+                  // Adjust the boundaries of the map to fit the markers
+                  //bounds.extend(markers[i].position);
+                  //console.log(markers);
+              }
             }
-        }
 
+
+        }
+        // Extend the boundaries of the map for each marker
+             map.fitBounds(bounds);
     }
 
     // Remove markers from the map
