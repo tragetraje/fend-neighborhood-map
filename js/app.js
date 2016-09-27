@@ -349,7 +349,7 @@ var ViewModel = function() {
 
         if (!queryString) {
             populateMap(queryString);
-          } else {
+        } else {
             removeMarkers();
             populateMap(queryString);
         }
@@ -421,33 +421,6 @@ var ViewModel = function() {
             var searchSuburbName = self.locations()[i].artworkLocation.toLowerCase();
 
             if (queryString === "") {
-              var marker = new google.maps.Marker({
-                  map: map,
-                  position: position,
-                  author: author,
-                  origin: origin,
-                  address: address,
-                  icon: defaultIconColor,
-                  animation: google.maps.Animation.DROP,
-                  id: i
-              });
-              // Adds created location marker to marker array
-                      markers.push(marker);
-
-              //         // Makes infowindow pop up on click of a marker
-                      marker.addListener('click', function() {
-                           populateInfoWindow(this, largeInfoWindow);
-                           this.setIcon(highlightedIconColor);
-                       });
-
-                       self.locations()[i].marker = marker;
-                       //console.log(marker);
-
-                       // Adjust the boundaries of the map to fit the markers
-                       bounds.extend(markers[i].position);
-
-            } else {
-              if ((searchArtistName.indexOf(queryString) !== -1) || (searchSuburbName.indexOf(queryString) !== -1)) {
                 var marker = new google.maps.Marker({
                     map: map,
                     position: position,
@@ -458,35 +431,125 @@ var ViewModel = function() {
                     animation: google.maps.Animation.DROP,
                     id: i
                 });
+                // Adds created location marker to marker array
+                markers.push(marker);
+
+                //         // Makes infowindow pop up on click of a marker
+                marker.addListener('click', function() {
+                    populateInfoWindow(this, largeInfoWindow);
+                    this.setIcon(highlightedIconColor);
+                });
+
+                self.locations()[i].marker = marker;
+                //console.log(marker);
+
+                // Adjust the boundaries of the map to fit the markers
+                bounds.extend(markers[i].position);
+
+            } else {
+                if ((searchArtistName.indexOf(queryString) !== -1) || (searchSuburbName.indexOf(queryString) !== -1)) {
+                    var marker = new google.maps.Marker({
+                        map: map,
+                        position: position,
+                        author: author,
+                        origin: origin,
+                        address: address,
+                        icon: defaultIconColor,
+                        animation: google.maps.Animation.DROP,
+                        id: i
+                    });
 
 
-                  // Adds created location marker to marker array
-                  markers.push(marker);
+                    // Adds created location marker to marker array
+                    markers.push(marker);
 
-                  // Makes infowindow pop up on click of a marker
-                  marker.addListener('click', function() {
-                      populateInfoWindow(this, largeInfoWindow);
-                      this.setIcon(highlightedIconColor);
-                  });
+                    // Makes infowindow pop up on click of a marker
+                    marker.addListener('click', function() {
+                        populateInfoWindow(this, largeInfoWindow);
+                        this.setIcon(highlightedIconColor);
+                    });
 
-                  self.locations()[i].marker = marker;
-
-                  // Adjust the boundaries of the map to fit the markers
-                  //bounds.extend(markers[i].position);
-                  //console.log(markers);
-              }
+                    self.locations()[i].marker = marker;
+                }
             }
-
-
         }
         // Extend the boundaries of the map for each marker
-             map.fitBounds(bounds);
+        map.fitBounds(bounds);
     }
+
+    // // Filters the map to searched results only and place its markers
+    // function populateMap(queryString) {
+    //         self.locations().forEach(function(location) {
+    //         console.log(location);
+    //         var position = location.coordinates;
+    //         var author = location.author;
+    //         var address = location.artworkLocation;
+    //         var origin = location.origin;
+    //         var searchArtistName = location.author.toLowerCase();
+    //         var searchSuburbName = location.artworkLocation.toLowerCase();
+    //
+    //         if (queryString === "") {
+    //             var marker = new google.maps.Marker({
+    //                 map: map,
+    //                 position: position,
+    //                 author: author,
+    //                 origin: origin,
+    //                 address: address,
+    //                 icon: defaultIconColor,
+    //                 animation: google.maps.Animation.DROP,
+    //                 id: location
+    //             });
+    //             // Adds created location marker to marker array
+    //             markers.push(marker);
+    //
+    //             //         // Makes infowindow pop up on click of a marker
+    //             marker.addListener('click', function() {
+    //                 populateInfoWindow(this, largeInfoWindow);
+    //                 this.setIcon(highlightedIconColor);
+    //             });
+    //
+    //             location.marker = marker;
+    //             //console.log(marker);
+    //
+    //             // Adjust the boundaries of the map to fit the markers
+    //             bounds.extend(markers.position);
+    //
+    //         } else {
+    //             if ((searchArtistName.indexOf(queryString) !== -1) || (searchSuburbName.indexOf(queryString) !== -1)) {
+    //                 var marker = new google.maps.Marker({
+    //                     map: map,
+    //                     position: position,
+    //                     author: author,
+    //                     origin: origin,
+    //                     address: address,
+    //                     icon: defaultIconColor,
+    //                     animation: google.maps.Animation.DROP,
+    //                     id: location
+    //                 });
+    //
+    //
+    //                 // Adds created location marker to marker array
+    //                 markers.push(marker);
+    //
+    //                 // Makes infowindow pop up on click of a marker
+    //                 marker.addListener('click', function() {
+    //                     populateInfoWindow(this, largeInfoWindow);
+    //                     this.setIcon(highlightedIconColor);
+    //                 });
+    //
+    //                 location.marker = marker;
+    //             }
+    //         }
+    //     });
+    //     // Extend the boundaries of the map for each marker
+    //     map.fitBounds(bounds);
+    // }
+
 
     // Remove markers from the map
     //https://developers.google.com/maps/documentation/javascript/examples/marker-remove
     // Sets the map on all markers in the array
-    function setMapOnAll(map) {
+    function setMapOnAll() {
         for (var i = 0; i < markers.length; i++) {
             //markers[i].setMap(map);
             markers[i].setVisible(false);
@@ -495,11 +558,11 @@ var ViewModel = function() {
 
     // Deletes all markers in the array by removing references to them
     function removeMarkers() {
-        setMapOnAll(null);
+        setMapOnAll();
         markers = [];
     }
 };
 
 var mapsInitError = function() {
-  alert("Google Maps failed to load");
+    alert("Google Maps failed to load");
 };
