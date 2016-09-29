@@ -405,6 +405,9 @@ var ViewModel = function() {
     // Opens the marker when listed location is clicked
     self.listLocationSelected = function(data) {
         populateInfoWindow(data.marker, largeInfoWindow);
+        markers.forEach(function(marker) {
+          marker.setIcon(defaultIconColor);
+        });
         data.marker.setIcon(highlightedIconColor);
     };
 
