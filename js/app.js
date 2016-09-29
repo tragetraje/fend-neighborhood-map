@@ -333,11 +333,11 @@ var ViewModel = function() {
         if (queryString === "") {
             return self.locations();
         } else {
+            largeInfoWindow.close();
             return ko.utils.arrayFilter(self.locations(), function(location) {
                 var author = location.author.toLowerCase();
                 var place = location.artworkLocation.toLowerCase();
-                // return ((author.indexOf(queryString) !== -1) || (place.indexOf(queryString) !== -1));
-                return author.indexOf(queryString) !== -1;
+                return ((author.indexOf(queryString) !== -1) || (place.indexOf(queryString) !== -1));
             });
         }
     });
