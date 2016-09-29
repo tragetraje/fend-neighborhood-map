@@ -336,7 +336,8 @@ var ViewModel = function() {
             return ko.utils.arrayFilter(self.locations(), function(location) {
                 var author = location.author.toLowerCase();
                 var place = location.artworkLocation.toLowerCase();
-                return ((author.indexOf(queryString) !== -1) || (place.indexOf(queryString) !== -1));
+                // return ((author.indexOf(queryString) !== -1) || (place.indexOf(queryString) !== -1));
+                return author.indexOf(queryString) !== -1;
             });
         }
     });
@@ -462,21 +463,13 @@ var ViewModel = function() {
         map.fitBounds(bounds);
     }
 
-
-    // Remove markers from the map
-    //https://developers.google.com/maps/documentation/javascript/examples/marker-remove
-    // Sets the map on all markers in the array
-    function setMapOnAll() {
-        for (var i = 0; i < markers.length; i++) {
-            //markers[i].setMap(map);
-            markers[i].setVisible(false);
-        }
-    }
-
-    // Deletes all markers in the array by removing references to them
+    // Deletes all markers in the array by making them invisible
     function removeMarkers() {
-        setMapOnAll();
+        markers.forEach(function(marker) {
+            marker.setVisible(false);
+        });
         markers = [];
+
     }
 };
 
