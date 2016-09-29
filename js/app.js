@@ -329,16 +329,14 @@ var ViewModel = function() {
     // Handles the list of locations/chosen locations
     self.selectLocations = ko.computed(function() {
         var queryString = self.searchQuery().toLowerCase();
-        //console.log(queryString);
 
         if (queryString === "") {
-            //console.count();
             return self.locations();
         } else {
             return ko.utils.arrayFilter(self.locations(), function(location) {
                 var author = location.author.toLowerCase();
-                //console.log(author);
-                return author.indexOf(queryString) !== -1;
+                var place = location.artworkLocation.toLowerCase();
+                return ((author.indexOf(queryString) !== -1) || (place.indexOf(queryString) !== -1));
             });
         }
     });
